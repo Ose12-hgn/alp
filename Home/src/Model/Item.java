@@ -1,12 +1,14 @@
 package Model;
 
 public class Item {
+    // Atributte
     private String itemID;
     private String namaItem;
     private String deskripsi;
     private double harga;
     private int stok;
 
+    // Constructor
     public Item(String itemID, String namaItem, String deskripsi, double harga, int stok) {
         this.itemID = itemID;
         this.namaItem = namaItem;
@@ -67,6 +69,7 @@ public class Item {
         return "Harga " + namaItem + ": Rp" + harga;
     }
 
+    // Function untuk menambah stok 
     public void tambahStok(int jumlah) {
         if (jumlah < 0) {
             System.out.println("Jumlah penambahan stok tidak boleh negatif.");
@@ -76,6 +79,7 @@ public class Item {
         System.out.println(jumlah + " " + namaItem + " telah ditambahkan ke stok. Stok saat ini: " + this.stok);
     }
 
+    // Function untuk mengurangi stok
     public boolean kurangiStok(int jumlah) {
         if (jumlah < 0) {
             System.out.println("Jumlah pengurangan stok tidak boleh negatif.");
