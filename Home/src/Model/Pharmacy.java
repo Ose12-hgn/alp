@@ -7,12 +7,14 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Pharmacy {
+    // Attribute
     private String pharmacyID;
     private String namaFarmasi;
     private String alamatFarmasi;
     private Map<String, Item> inventarisItems;
     private List<PaymentInfo> daftarTransaksi;
 
+    // Constructor
     public Pharmacy(String pharmacyID, String namaFarmasi, String alamatFarmasi) {
         this.pharmacyID = pharmacyID;
         this.namaFarmasi = namaFarmasi;
@@ -37,7 +39,8 @@ public class Pharmacy {
         return inventarisItems;
     }
 
-  public void tambahAtauUpdateItemInventaris(Item item, int quantity) {
+    // Function untuk menambah atau meng-update item ke gudang
+    public void tambahAtauUpdateItemInventaris(Item item, int quantity) {
         if (item == null || quantity <= 0) {
             System.out.println("Gagal menambahkan item: Data item atau kuantitas tidak valid.");
             return;
@@ -54,6 +57,7 @@ public class Pharmacy {
         }
     }
 
+    // Function untuk menghapus item dari gudang
     public void hapusItemDariInventaris(String itemID) {
         if (inventarisItems.containsKey(itemID)) {
             Item removedItem = inventarisItems.remove(itemID);
@@ -63,16 +67,19 @@ public class Pharmacy {
         }
     }
 
+    // Function untuk mencari item berdasarkan ID 
     public Item cariItemByID(String itemID) {
         return inventarisItems.get(itemID);
     }
 
+    // Function untuk mencari itemn berdasarkan nama
     public List<Item> cariItemByName(String namaItem) {
         return inventarisItems.values().stream()
                 .filter(item -> item.getNamaItem().equalsIgnoreCase(namaItem))
                 .collect(Collectors.toList());
     }
 
+    // Function untuk menampikan semua inventaris
     public void tampilkanInventaris() {
         if (inventarisItems.isEmpty()) {
             System.out.println("Inventaris farmasi '" + namaFarmasi + "' kosong.");
@@ -89,6 +96,7 @@ public class Pharmacy {
         System.out.println("--------------------------------------------------");
     }
 
+    // Function untuk memproses dari penjual obat
     public PaymentInfo prosesPenjualan(Patient patient, Map<String, Integer> itemsToPurchase, PharmacyUser pharmacyUser) {
         if (patient == null || itemsToPurchase == null || itemsToPurchase.isEmpty() || pharmacyUser == null) {
             System.out.println("Proses penjualan gagal: Data pasien, item, atau pengguna farmasi tidak lengkap.");
@@ -133,7 +141,7 @@ public class Pharmacy {
         System.out.println("Fungsi prosesPenjualan perlu implementasi objek PaymentInfo/Transaction yang lebih detail.");
         return null;
     }
-
+    // Function untuk konfirmasi proses resep
     public boolean prosesResep(Prescription prescription, PharmacyUser pharmacyUser) {
         if (prescription == null || pharmacyUser == null) {
             System.out.println("Proses resep gagal: Data resep atau pengguna farmasi tidak valid.");
@@ -146,6 +154,7 @@ public class Pharmacy {
         return true;
     }
 
+    // Function untuk membuat obat racikan atau obat baru
     public Medicine buatObatRacikan(List<Map<Medicine, Double>> components, Prescription prescription, PharmacyUser pharmacyUser) {
         System.out.println(pharmacyUser.getNama() + " meracik obat untuk resep ID: " + prescription.getPrescriptionID());
         System.out.println("Fungsi buatObatRacikan perlu implementasi detail.");
