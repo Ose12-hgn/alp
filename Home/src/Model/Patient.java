@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient extends Person {
+    // Atributte
     private LocalDate tanggalLahir;
     private String jenisKelamin;
     private String golonganDarah;
@@ -13,6 +14,7 @@ public class Patient extends Person {
     private List<Appointment> daftarJanjiTemu;
     private List<Prescription> daftarResepObat;
 
+    // Constructor
     public Patient(String userID, String nama, String alamat, String nomorTelepon, String email, String password,
                    LocalDate tanggalLahir, String jenisKelamin, String golonganDarah) {
         super(userID, nama, alamat, nomorTelepon, email, password);
@@ -60,6 +62,7 @@ public class Patient extends Person {
         return daftarResepObat;
     }
 
+    // Function untuk membuat janji temu dengan dokter
     public Appointment buatJanjiTemu(Doctor doctor, LocalDateTime waktuJanji, String keluhan) {
         System.out.println("Pasien " + getNama() + " meminta janji temu dengan Dr. " + doctor.getNama() +
                            " pada " + waktuJanji + " dengan keluhan: " + keluhan);
@@ -67,12 +70,14 @@ public class Patient extends Person {
         return null;
     }
 
+    // Function untuk menambah janji temu ke dalam list
     public void tambahJanjiTemu(Appointment appointment) {
         if (appointment != null && appointment.getPasien().equals(this)) {
             this.daftarJanjiTemu.add(appointment);
         }
     }
 
+    // Function untuk membatalkan janji temu
     public boolean batalkanJanjiTemu(Appointment appointment) {
         if (appointment == null || !this.daftarJanjiTemu.contains(appointment)) {
             System.out.println("Gagal membatalkan: Janji temu tidak ditemukan.");
@@ -85,6 +90,7 @@ public class Patient extends Person {
         return true;
     }
 
+    // Function untuk membuat semua list janji temu yang ada
     public void lihatDaftarJanjiTemu() {
         if (daftarJanjiTemu.isEmpty()) {
             System.out.println(getNama() + " tidak memiliki janji temu terjadwal.");
@@ -96,6 +102,7 @@ public class Patient extends Person {
         }
     }
 
+    // Function untuk melihat rekam medisnya sendiri
     public void lihatInformasiRekamMedis() {
         System.out.println("Rekam Medis untuk Pasien: " + getNama());
         if (this.medicalRecord != null) {
@@ -104,13 +111,15 @@ public class Patient extends Person {
             System.out.println("Belum ada data rekam medis.");
         }
     }
-  
+
+    // Function untuk menambahkan resep dari dokter ke list
     public void tambahResep(Prescription prescription) {
         if (prescription != null && prescription.getPasien().equals(this)) {
             this.daftarResepObat.add(prescription);
         }
     }
 
+    // Function untuk melihat semua resep yang didapatkan
     public void lihatDaftarResep() {
         if (daftarResepObat.isEmpty()) {
             System.out.println(getNama() + " tidak memiliki resep obat saat ini.");
