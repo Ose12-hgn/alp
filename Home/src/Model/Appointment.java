@@ -3,6 +3,7 @@ package Model;
 import java.time.LocalDateTime;
 
 public class Appointment {
+    // Atributte
     private String appointmentID;
     private Patient pasien;
     private Doctor dokter;
@@ -11,6 +12,7 @@ public class Appointment {
     private String keluhanAwal;
     private String catatanDokter;
 
+    // Constructor
     public Appointment(String appointmentID, Patient pasien, Doctor dokter, LocalDateTime waktuJanji, String keluhanAwal) {
         if (pasien == null || dokter == null || waktuJanji == null || appointmentID == null || appointmentID.trim().isEmpty()) {
             throw new IllegalArgumentException("Tidak boleh kosong.");
@@ -79,6 +81,7 @@ public class Appointment {
         System.out.println("Catatan dokter ditambahkan/diperbarui untuk janji temu ID " + this.appointmentID);
     }
 
+    // Function untuk mengubah status janji temu menjadi "DIJADWALKAN" karena telah disetujui
     public void konfirmasiJanjiTemu() {
         if ("DIAJUKAN".equals(this.status) || "MINTA_UBAH_DISETUJUI".equals(this.status)) {
             setStatus("DIJADWALKAN");
@@ -88,6 +91,7 @@ public class Appointment {
         }
     }
 
+    // Function untuk mengubah status janji temu menjadi "SELESAI" karena telah selesai dilaksanakan
     public void selesaikanJanjiTemu(String catatanAkhir) {
         if ("DIJADWALKAN".equals(this.status)) {
             setStatus("SELESAI");
@@ -98,6 +102,7 @@ public class Appointment {
         }
     }
 
+    // Function untuk membatalkan janji temu
     public void batalkanJanjiTemu(String olehSiapa) {
         if (!"SELESAI".equals(this.status) && !"DIBATALKAN_PASIEN".equals(this.status) && !"DIBATALKAN_DOKTER".equals(this.status) && !"DIBATALKAN_ADMIN".equals(this.status)) {
             if ("PASIEN".equalsIgnoreCase(olehSiapa)) {
