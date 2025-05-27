@@ -1,6 +1,7 @@
 package Model
 
 public class Person {
+    // Atributte
     private String userID;
     private String nama;
     private String alamat;
@@ -8,6 +9,7 @@ public class Person {
     private String email;
     private String password;
 
+    // Constructor
     public Person(String userID, String nama, String alamat, String nomorTelepon, String email, String password) {
         this.userID = userID;
         this.nama = nama;
@@ -16,7 +18,7 @@ public class Person {
         this.email = email;
         this.password = password;
     }
-
+    
     public String getUserID() {
         return userID;
     }
@@ -65,15 +67,18 @@ public class Person {
         this.password = password;
     }
 
+    // Function untuk konfirmasi login
     public boolean login(String inputPassword) {
         System.out.println(this.nama + " mencoba login.");
         return true;
     }
 
+    // Function untuk konfirmasi logout
     public void logout() {
         System.out.println(this.nama + " telah logout.");
     }
 
+    // Function untuk update profil info yang baru
     public void updateProfil(String namaBaru, String alamatBaru, String teleponBaru, String emailBaru) {
         this.nama = namaBaru;
         this.alamat = alamatBaru;
