@@ -2,9 +2,9 @@ package Model;
 
 public class Item {
     // Atributte
-    private String itemID;
-    private String namaItem;
-    private String deskripsi;
+    String itemID;
+    String namaItem;
+    String deskripsi;
     private double harga;
     private int stok;
 
