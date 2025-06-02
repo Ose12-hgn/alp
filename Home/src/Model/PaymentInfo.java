@@ -5,11 +5,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+record ItemQuantity(Item item, int quantity) {
+    public double getTotalPrice() {
+        if (item != null) {
+            return item.getHarga() * quantity;
+        }
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        if (item != null) {
+            return String.format("%s (Qty: %d) @ Rp%.2f = Rp%.2f",
+                    item.getNamaItem(), quantity, item.getHarga(), getTotalPrice());
+        }
+        return "Item tidak valid";
+    }
+}
+
+
 public class PaymentInfo {
     private String paymentID;
     private Patient patient;
     private Appointment appointment;
-    private Prescription prescription;
+    private Prescription prescription; // Pastikan Prescription.java ada
     private List<ItemQuantity> otherItemsPurchased;
     private double totalBiaya;
     private String metodePembayaran;
@@ -26,12 +45,18 @@ public class PaymentInfo {
             throw new IllegalArgumentException("Pasien dan nama pasien tidak boleh null atau kosong untuk membuat PaymentID.");
         }
 
-        // Creating Patient ID
-        String sanitizedName = patient.getNama().replaceAll("A", "I", "U", "E", "O", "a", "i", "u", "e", "o", "B", "b", "C", "c", " ").toUpperCase();
-        if (sanitizedName.length() > 10) { // Restricting Patient ID Length
-            sanitizedName = sanitizedName.substring(0, 10);
+        String nameForIdGeneration = patient.getNama();
+        // Ini akan MENGHAPUS semua karakter vokal (besar/kecil), B/b, C/c, dan spasi
+        // Jika maksudnya adalah transformasi vokal ke angka (a->4, i->1, dst.), gunakan StringTransformer.gantiVokalDenganAngka()
+        String baseNameForId = nameForIdGeneration.replaceAll("[AIUEOaiueoBbCc ]", "").toUpperCase();
+
+        if (baseNameForId.length() > 10) {
+            baseNameForId = baseNameForId.substring(0, 10);
         }
-        this.paymentID = "PAY-" + sanitizedName + "-" + LocalDateTime.now().format(ID_TIMESTAMP_FORMATTER);
+        if (baseNameForId.isEmpty()){
+            baseNameForId = "GENERIC"; // Atau ID Pasien jika nama kosong setelah sanitasi
+        }
+        this.paymentID = "PAY-" + baseNameForId + "-" + LocalDateTime.now().format(ID_TIMESTAMP_FORMATTER);
 
         this.patient = patient;
         this.totalBiaya = totalBiaya;
@@ -39,8 +64,7 @@ public class PaymentInfo {
         this.tanggalPembayaranDibuat = LocalDateTime.now();
         this.diprosesOleh = diprosesOleh;
         this.otherItemsPurchased = new ArrayList<>();
-        System.out.println("PERHATIAN: PaymentID dibuat berdasarkan nama pasien dan timestamp: " + this.paymentID +
-                           ". Pastikan Anda memahami implikasi keunikan jika hanya mengandalkan nama pasien secara global.");
+        // System.out.println("PERHATIAN: PaymentID dibuat: " + this.paymentID); // Dihilangkan atau jadi log
     }
 
     // Constructor khusus untuk pembayaran Janji Temu
@@ -57,30 +81,20 @@ public class PaymentInfo {
 
     // Constructor khusus untuk pembelian item non-resep di farmasi
     public PaymentInfo(Patient patient, List<ItemQuantity> items, Person diprosesOleh) {
-        this(patient, 0, diprosesOleh);
+        this(patient, 0, diprosesOleh); // Total biaya akan dihitung
         this.otherItemsPurchased = (items != null) ? new ArrayList<>(items) : new ArrayList<>();
         this.totalBiaya = calculateTotalFromItems();
     }
 
-    public String getPaymentID() {
-        return paymentID;
-    }
+    // ... (sisa getter, setter, dan metode lainnya tetap sama seperti sebelumnya, tanpa StringBuilder di toString) ...
+    // Pastikan toString() Anda sudah direvisi tanpa StringBuilder jika itu keinginan Anda.
+    // Saya akan salin versi toString tanpa StringBuilder dari respons saya sebelumnya.
 
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public Appointment getAppointment() {
-        return appointment;
-    }
-
-    public Prescription getPrescription() {
-        return prescription;
-    }
-
-    public List<ItemQuantity> getOtherItemsPurchased() {
-        return otherItemsPurchased;
-    }
+    public String getPaymentID() { return paymentID; }
+    public Patient getPatient() { return patient; }
+    public Appointment getAppointment() { return appointment; }
+    public Prescription getPrescription() { return prescription; }
+    public List<ItemQuantity> getOtherItemsPurchased() { return otherItemsPurchased; }
 
     public double getTotalBiaya() {
         if (this.prescription == null && this.appointment == null && this.otherItemsPurchased != null && !this.otherItemsPurchased.isEmpty()) {
@@ -88,56 +102,24 @@ public class PaymentInfo {
         }
         return totalBiaya;
     }
+    public String getMetodePembayaran() { return metodePembayaran; }
+    public String getStatusPembayaran() { return statusPembayaran; }
+    public LocalDateTime getTanggalPembayaranDibuat() { return tanggalPembayaranDibuat; }
+    public LocalDateTime getTanggalPelunasan() { return tanggalPelunasan; }
+    public Person getDiprosesOleh() { return diprosesOleh; }
 
-    public String getMetodePembayaran() {
-        return metodePembayaran;
-    }
-
-    public String getStatusPembayaran() {
-        return statusPembayaran;
-    }
-
-    public LocalDateTime getTanggalPembayaranDibuat() {
-        return tanggalPembayaranDibuat;
-    }
-
-    public LocalDateTime getTanggalPelunasan() {
-        return tanggalPelunasan;
-    }
-
-    public Person getDiprosesOleh() {
-        return diprosesOleh;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public void setAppointment(Appointment appointment) {
-        this.appointment = appointment;
-    }
-
-    public void setPrescription(Prescription prescription) {
-        this.prescription = prescription;
-    }
-
+    public void setPatient(Patient patient) { this.patient = patient; }
+    public void setAppointment(Appointment appointment) { this.appointment = appointment; }
+    public void setPrescription(Prescription prescription) { this.prescription = prescription; }
     public void setOtherItemsPurchased(List<ItemQuantity> otherItemsPurchased) {
         this.otherItemsPurchased = otherItemsPurchased;
         this.totalBiaya = calculateTotalFromItems();
     }
-
     public void setTotalBiaya(double totalBiaya) {
-        if (totalBiaya < 0) {
-            System.out.println("Total biaya tidak boleh negatif.");
-            return;
-        }
+        if (totalBiaya < 0) { System.out.println("Total biaya tidak boleh negatif."); return; }
         this.totalBiaya = totalBiaya;
     }
-
-    public void setMetodePembayaran(String metodePembayaran) {
-        this.metodePembayaran = metodePembayaran;
-    }
-
+    public void setMetodePembayaran(String metodePembayaran) { this.metodePembayaran = metodePembayaran; }
     public void setStatusPembayaran(String statusPembayaran) {
         this.statusPembayaran = statusPembayaran;
         if ("LUNAS".equalsIgnoreCase(statusPembayaran) && this.tanggalPelunasan == null) {
@@ -146,40 +128,24 @@ public class PaymentInfo {
             this.tanggalPelunasan = null;
         }
     }
+    public void setDiprosesOleh(Person diprosesOleh) { this.diprosesOleh = diprosesOleh; }
 
-    public void setDiprosesOleh(Person diprosesOleh) {
-        this.diprosesOleh = diprosesOleh;
-    } // Getter Setter
-
-    // Other Method
     private double calculateTotalFromItems() {
-        if (this.otherItemsPurchased == null || this.otherItemsPurchased.isEmpty()) {
-            return 0;
-        }
+        if (this.otherItemsPurchased == null || this.otherItemsPurchased.isEmpty()) { return 0; }
         double sum = 0;
-        for (ItemQuantity iq : this.otherItemsPurchased) {
-            sum += iq.getTotalPrice();
-        }
+        for (ItemQuantity iq : this.otherItemsPurchased) { sum += iq.getTotalPrice(); }
         return sum;
     }
 
     public void tambahItemLain(Item item, int quantity) {
-        if (item == null || quantity <= 0) {
-            System.out.println("Item atau kuantitas tidak valid.");
-            return;
-        }
-        if (this.otherItemsPurchased == null) {
-            this.otherItemsPurchased = new ArrayList<>();
-        }
+        if (item == null || quantity <= 0) { System.out.println("Item atau kuantitas tidak valid."); return; }
+        if (this.otherItemsPurchased == null) { this.otherItemsPurchased = new ArrayList<>(); }
         this.otherItemsPurchased.add(new ItemQuantity(item, quantity));
         this.totalBiaya = calculateTotalFromItems();
     }
 
     public boolean prosesPelunasan(String metode) {
-        if ("LUNAS".equalsIgnoreCase(this.statusPembayaran)) {
-            System.out.println("Pembayaran ID: " + this.paymentID + " sudah lunas.");
-            return false;
-        }
+        if ("LUNAS".equalsIgnoreCase(this.statusPembayaran)) { System.out.println("Pembayaran ID: " + this.paymentID + " sudah lunas."); return false; }
         setMetodePembayaran(metode);
         setStatusPembayaran("LUNAS");
         System.out.println("Pembayaran ID: " + this.paymentID + " sejumlah Rp" + String.format("%.2f", this.totalBiaya) +
@@ -198,7 +164,7 @@ public class PaymentInfo {
             paymentDetails += "  appointmentID='" + appointment.getAppointmentID() + "',\n";
         }
         if (prescription != null) {
-            paymentDetails += "  prescriptionID='" + prescription.getPrescriptionID() + "',\n";
+            paymentDetails += "  prescriptionID='" + (prescription.getPrescriptionID() != null ? prescription.getPrescriptionID() : "N/A") + "',\n";
         }
         if (otherItemsPurchased != null && !otherItemsPurchased.isEmpty()) {
             paymentDetails += "  otherItemsPurchased=[\n";
@@ -224,7 +190,6 @@ public class PaymentInfo {
         }
         paymentDetails += "  diprosesOleh=" + (diprosesOleh != null ? diprosesOleh.getNama() : "N/A") + "\n";
         paymentDetails += "}";
-
         return paymentDetails;
     }
 }
