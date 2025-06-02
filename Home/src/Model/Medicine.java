@@ -18,7 +18,7 @@ public class Medicine extends Item {
                     LocalDate tanggalKadaluarsa, String dosis, String bentukSediaan,
                     boolean membutuhkanResep, String produsen, String kategoriObat,
                     String petunjukPenyimpanan, boolean isRacikan) {
-        super(itemID, namaItem, deskripsi, harga, stok);
+        super (itemID, namaItem, deskripsi, harga, stok);
         this.tanggalKadaluarsa = tanggalKadaluarsa;
         this.dosis = dosis;
         this.bentukSediaan = bentukSediaan;
