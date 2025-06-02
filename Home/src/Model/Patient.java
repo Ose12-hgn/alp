@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient extends Person {
-    // Atributte
+    // Atribut
     private LocalDate tanggalLahir;
     private String jenisKelamin;
     private String golonganDarah;
@@ -24,6 +24,11 @@ public class Patient extends Person {
         this.medicalRecord = new MedicalRecord(this);
         this.daftarJanjiTemu = new ArrayList<>();
         this.daftarResepObat = new ArrayList<>();
+    }
+
+    // Getter untuk medicalRecord
+    public MedicalRecord getMedicalRecord() {
+        return medicalRecord;
     }
 
     public LocalDate getTanggalLahir() {
@@ -48,10 +53,6 @@ public class Patient extends Person {
 
     public void setGolonganDarah(String golonganDarah) {
         this.golonganDarah = golonganDarah;
-    }
-
-    public MedicalRecord getMedicalRecord() {
-        return medicalRecord;
     }
 
     public List<Appointment> getDaftarJanjiTemu() {
@@ -90,7 +91,7 @@ public class Patient extends Person {
         return true;
     }
 
-    // Function untuk membuat semua list janji temu yang ada
+    // Function untuk melihat semua list janji temu yang ada
     public void lihatDaftarJanjiTemu() {
         if (daftarJanjiTemu.isEmpty()) {
             System.out.println(getNama() + " tidak memiliki janji temu terjadwal.");
