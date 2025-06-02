@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class Doctor extends Person {
     // Atributte
@@ -42,6 +43,51 @@ public class Doctor extends Person {
 
     public List<Appointment> getDaftarJanjiTemuPasien() {
         return daftarJanjiTemuPasien;
+    }
+    
+    public Prescription buatResep(Patient pasien, List<MedicineUsage> detailPenggunaanObat, String catatanTambahan) {
+        if (pasien == null || detailPenggunaanObat == null || detailPenggunaanObat.isEmpty()) {
+            System.out.println("Tidak bisa membuat resep: pasien atau detail obat tidak lengkap.");
+            return null;
+        }
+
+        // Membuat ID Resep yang unik (contoh sederhana)
+        String prescriptionID = "PRES-" + pasien.getUserID() + "-" + System.currentTimeMillis() % 100000;
+
+        Prescription resepBaru = new Prescription(prescriptionID, this, pasien, LocalDate.now(), catatanTambahan);
+
+        for (MedicineUsage mu : detailPenggunaanObat) {
+            resepBaru.tambahObatKeResep(mu);
+        }
+
+        // Penting: Pasien juga perlu menyimpan referensi ke resep ini
+        if (pasien.getDaftarResepObat() != null) { // Sebaiknya getDaftarResepObat() tidak null
+            pasien.tambahResep(resepBaru); // Asumsi ada metode tambahResep di Patient
+        }
+
+        System.out.println("Dr. " + getNama() + " berhasil membuat resep ID: " + resepBaru.getPrescriptionID() + " untuk pasien " + pasien.getNama() + ".");
+        return resepBaru;
+    }
+
+    // Metode lihatRekamMedisPasien dan lakukanKonsultasi juga perlu implementasi yang lebih baik
+    public void lihatRekamMedisPasien(Patient pasien) {
+        if (pasien != null && pasien.getMedicalRecord() != null) {
+            System.out.println("Dr. " + getNama() + " melihat rekam medis untuk pasien " + pasien.getNama() + ":");
+            System.out.println(pasien.getMedicalRecord().toString());
+        } else {
+            System.out.println("Tidak dapat menampilkan rekam medis.");
+        }
+    }
+
+    public void lakukanKonsultasi(Patient pasien, String diagnosis, String penanganan, Doctor dokterPemeriksa) {
+        System.out.println("Dr. " + getNama() + " melakukan konsultasi dengan pasien " + pasien.getNama() + ".");
+        if (pasien != null && pasien.getMedicalRecord() != null) {
+            // Menggunakan metode baru di MedicalRecord
+            pasien.getMedicalRecord().tambahRiwayatKunjungan(LocalDate.now(), diagnosis, penanganan, dokterPemeriksa);
+            System.out.println("Catatan konsultasi ditambahkan ke rekam medis.");
+        } else {
+             System.out.println("Tidak dapat menambahkan catatan konsultasi ke rekam medis.");
+        }
     }
 
     // Function untuk menambah jadwal ketersediaan dokter
@@ -95,24 +141,6 @@ public class Doctor extends Person {
         for (Appointment janji : daftarJanjiTemuPasien) {
             System.out.println("- Pasien: " + janji.getPasien().getNama() + ", Waktu: " + janji.getWaktuJanji() + ", Status: " + janji.getStatus());
         }
-    }
-
-    // Function untuk membuat resep kepada pasien
-    public Prescription buatResep(Patient pasien, List<String> detailObat) {
-        System.out.println("Dr. " + getNama() + " membuat resep untuk pasien " + pasien.getNama() + ".");
-        System.out.println("Detail Obat: " + detailObat);
-        return null;
-    }
-
-    // Function untuk melihat rekam medis dari pasien
-    public void lihatRekamMedisPasien(Patient pasien) {
-        System.out.println("Dr. " + getNama() + " melihat rekam medis untuk pasien " + pasien.getNama() + ".");
-    }
-
-    // Function untuk memberikan catatan konsultasi kepada pasien
-    public void lakukanKonsultasi(Patient pasien, String catatanKonsultasi) {
-        System.out.println("Dr. " + getNama() + " melakukan konsultasi dengan pasien " + pasien.getNama() + ".");
-        System.out.println("Catatan Konsultasi: " + catatanKonsultasi);
     }
 
     @Override
