@@ -25,25 +25,25 @@ public class Appointment {
         this.status = "DIAJUKAN";
         this.catatanDokter = "";
     }
-
-    public String getAppointmentID() {
-        return appointmentID;
-    }
-
+    
     public Patient getPasien() {
-        return pasien;
+        return pasien; // atau nama field yang sesuai
     }
 
     public Doctor getDokter() {
-        return dokter;
+        return dokter; // atau nama field yang sesuai
+    }
+
+    public String getAppointmentID() {
+        return appointmentID; // atau nama field yang sesuai
     }
 
     public LocalDateTime getWaktuJanji() {
-        return waktuJanji;
+        return waktuJanji; // atau nama field yang sesuai
     }
 
     public String getStatus() {
-        return status;
+        return status; // atau nama field yang sesuai
     }
 
     public String getKeluhanAwal() {
