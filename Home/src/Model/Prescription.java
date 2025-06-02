@@ -28,6 +28,10 @@ public class Prescription {
         this.catatanTambahanDokter = (catatanTambahanDokter == null) ? "" : catatanTambahanDokter;
     }
 
+    public LocalDate getTanggalResep() {
+        return tanggalResep;
+    }
+
     public String getPrescriptionID() {
         return prescriptionID;
     }
@@ -38,10 +42,6 @@ public class Prescription {
 
     public Patient getPatient() {
         return patient;
-    }
-
-    public LocalDate getTanggalResep() {
-        return tanggalResep;
     }
 
     public List<MedicineUsage> getDaftarObatDalamResep() {
@@ -104,37 +104,39 @@ public class Prescription {
     }
 
     @Override
-public String toString() {
+    public String toString() {
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
 
-    String prescriptionDate = (tanggalResep != null) ? tanggalResep.format(dateFormatter) : "N/A";
-    String doctorName = (doctor != null) ? doctor.getNama() : "N/A";
-    String doctorSpecialist = (doctor != null) ? doctor.getSpesialisasi() : "N/A";
-    String patientName = (patient != null) ? patient.getNama() : "N/A";
-    String catatan = (catatanTambahanDokter == null || catatanTambahanDokter.isEmpty()) ? "Tidak ada" : catatanTambahanDokter;
+    String prescriptionDateStr = (tanggalResep != null) ? tanggalResep.format(dateFormatter) : "N/A";
+    String doctorNameStr = (doctor != null ? doctor.getNama() : "N/A");
+    String doctorSpecialistStr = (doctor != null ? doctor.getSpesialisasi() : "N/A");
+    String patientNameStr = (patient != null ? patient.getNama() : "N/A");
+    String catatanDokterStr = (catatanTambahanDokter == null || catatanTambahanDokter.isEmpty()) ? "Tidak ada" : catatanTambahanDokter;
 
-    String daftarObatText = "";
+    String result = "Prescription{\n";
+    result += "  prescriptionID='" + prescriptionID + "',\n";
+    result += "  tanggalResep=" + prescriptionDateStr + ",\n";
+    result += "  doctor=" + doctorNameStr + " (Spesialis: " + doctorSpecialistStr + "),\n";
+    result += "  patient=" + patientNameStr + ",\n";
+    result += "  statusResep='" + statusResep + "',\n";
+    result += "  catatanDokter='" + catatanDokterStr + "',\n";
+    result += "  daftarObatDalamResep=[\n";
+
     if (daftarObatDalamResep.isEmpty()) {
-        daftarObatText = "    (Tidak ada obat dalam resep ini)\n";
+        result += "    (Tidak ada obat dalam resep ini)\n";
     } else {
-        for (MedicineUsage mu : daftarObatDalamResep) {
-            daftarObatText += "    - " + mu.toString() + "\n";
+        for (int i = 0; i < daftarObatDalamResep.size(); i++) {
+            MedicineUsage mu = daftarObatDalamResep.get(i);
+            result += "    - " + mu.toString();
+            if (i < daftarObatDalamResep.size() - 1) {
+                result += ",\n"; // Tambahkan koma untuk semua kecuali item terakhir
+            } else {
+                result += "\n"; // Baris baru untuk item terakhir
+            }
         }
     }
-
-    String result =
-        "Prescription{\n" +
-        "  prescriptionID='" + prescriptionID + "',\n" +
-        "  tanggalResep=" + prescriptionDate + ",\n" +
-        "  doctor=" + doctorName + " (Spesialis: " + doctorSpecialist + "),\n" +
-        "  patient=" + patientName + ",\n" +
-        "  statusResep='" + statusResep + "',\n" +
-        "  catatanDokter='" + catatan + "',\n" +
-        "  daftarObatDalamResep=[\n" +
-        daftarObatText +
-        "  ]\n" +
-        "}";
-
+    result += "  ]\n";
+    result += "}";
     return result;
 }
 
