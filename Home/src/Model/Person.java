@@ -1,4 +1,4 @@
-package Model
+package Model;
 
 public class Person {
     // Atributte
@@ -19,16 +19,20 @@ public class Person {
         this.password = password;
     }
     
+    public String getNama() {
+        return nama;
+    }
+
     public String getUserID() {
         return userID;
     }
 
-    public void setUserID(String userID) {
-        this.userID = userID;
+    public String getEmail() {
+        return email;
     }
 
-    public String getNama() {
-        return nama;
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 
     public void setNama(String nama) {
@@ -49,10 +53,6 @@ public class Person {
 
     public void setNomorTelepon(String nomorTelepon) {
         this.nomorTelepon = nomorTelepon;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public void setEmail(String email) {
