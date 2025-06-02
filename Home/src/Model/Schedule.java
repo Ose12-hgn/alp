@@ -1,28 +1,41 @@
 package Model;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Schedule {
-    private String scheduleID; // ID for Schedule
+    private String scheduleID;
     private Doctor doctor;
-    private DayOfWeek dayOfWeek; // the Day
+    private DayOfWeek dayOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
-    private boolean isActive; // is the Schedule active
-    private String notes; // Notes for patient
-    private Queue q = new Queue;
+    private boolean isActive;
+    private String notes;
+    private Queue<Appointment> dailyAppointmentQueue;
 
     // Constructor
     public Schedule(String scheduleID, Doctor doctor, DayOfWeek dayOfWeek,
                     LocalTime startTime, LocalTime endTime, boolean isActive, String notes) {
-        if (doctor == null || dayOfWeek == null || startTime == null || endTime == null || scheduleID == null || scheduleID.trim().isEmpty()) {
-            throw new IllegalArgumentException("Parameter untuk Schedule tidak boleh null atau kosong.");
+        if (scheduleID == null || scheduleID.trim().isEmpty()) {
+            throw new IllegalArgumentException("Schedule ID tidak boleh null atau kosong.");
+        }
+        if (doctor == null) {
+            throw new IllegalArgumentException("Dokter tidak boleh null.");
+        }
+        if (dayOfWeek == null) {
+            throw new IllegalArgumentException("Hari tidak boleh null.");
+        }
+        if (startTime == null || endTime == null) {
+            throw new IllegalArgumentException("Waktu mulai dan selesai tidak boleh null.");
         }
         if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
             throw new IllegalArgumentException("Waktu mulai harus sebelum waktu selesai.");
         }
+        
         this.scheduleID = scheduleID;
         this.doctor = doctor;
         this.dayOfWeek = dayOfWeek;
@@ -30,6 +43,15 @@ public class Schedule {
         this.endTime = endTime;
         this.isActive = isActive;
         this.notes = (notes == null) ? "" : notes;
+        this.dailyAppointmentQueue = new LinkedList<>();
+    }
+    
+    public Queue<Appointment> getDailyAppointmentQueue() {
+        return dailyAppointmentQueue;
+    }
+
+    public void setDailyAppointmentQueue(Queue<Appointment> newQueue) {
+        this.dailyAppointmentQueue = newQueue;
     }
 
     public String getScheduleID() {
@@ -38,6 +60,26 @@ public class Schedule {
 
     public Doctor getDoctor() {
         return doctor;
+    }
+
+    // Fixed method name to match usage in other classes
+    public Doctor getDokter() {
+        return doctor;
+    }
+
+    // Fixed method name to match usage in other classes  
+    public String getHari() {
+        return dayOfWeek.toString();
+    }
+
+    // Fixed method name to match usage in other classes
+    public String getJamMulai() {
+        return startTime.toString();
+    }
+
+    // Fixed method name to match usage in other classes
+    public String getJamSelesai() {
+        return endTime.toString();
     }
 
     public DayOfWeek getDayOfWeek() {
@@ -50,10 +92,6 @@ public class Schedule {
 
     public LocalTime getEndTime() {
         return endTime;
-    }
-
-    public Queue getQueue() {
-        return q;
     }
 
     public boolean isActive() {
@@ -96,29 +134,23 @@ public class Schedule {
         isActive = active;
     }
 
-    public Queue setQueue(Queue Queue) {
-        this.q == Queue
-    }
-
     public void setNotes(String notes) {
         this.notes = (notes == null) ? "" : notes;
-    } // Getter Setter
+    }
 
     public boolean isWithinSchedule(LocalDateTime dateTime) {
         if (dateTime == null || !this.isActive) {
             return false;
         }
-        // checking day and what time beetwen startTime and endTime
         return dateTime.getDayOfWeek() == this.dayOfWeek &&
                !dateTime.toLocalTime().isBefore(this.startTime) &&
-               !dateTime.toLocalTime().isAfter(this.endTime); // Supposedly right at endTime if Patient make appointments in the end of the day
+               (dateTime.toLocalTime().isBefore(this.endTime) || dateTime.toLocalTime().equals(this.endTime));
     }
-
 
     @Override
     public String toString() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        return "Schedule{" +
+        String scheduleDetails = "Schedule{" +
                "scheduleID='" + scheduleID + '\'' +
                ", doctor=" + (doctor != null ? doctor.getNama() : "N/A") +
                ", dayOfWeek=" + dayOfWeek +
@@ -126,10 +158,11 @@ public class Schedule {
                ", endTime=" + (endTime != null ? endTime.format(timeFormatter) : "N/A") +
                ", isActive=" + isActive +
                ", notes='" + notes + '\'' +
+               ", Antrean Hari Ini (size)=" + (dailyAppointmentQueue != null ? dailyAppointmentQueue.size() : 0) +
                '}';
+        return scheduleDetails;
     }
 
-    // Override equals dan hashCode if Schedule will be stored in one Set or used as key in Map
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
