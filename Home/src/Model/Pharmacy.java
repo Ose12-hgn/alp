@@ -72,14 +72,14 @@ public class Pharmacy {
         return inventarisItems.get(itemID);
     }
 
-    // Function untuk mencari itemn berdasarkan nama
+    // Function untuk mencari item berdasarkan nama
     public List<Item> cariItemByName(String namaItem) {
         return inventarisItems.values().stream()
                 .filter(item -> item.getNamaItem().equalsIgnoreCase(namaItem))
                 .collect(Collectors.toList());
     }
 
-    // Function untuk menampikan semua inventaris
+    // Function untuk menampilkan semua inventaris
     public void tampilkanInventaris() {
         if (inventarisItems.isEmpty()) {
             System.out.println("Inventaris farmasi '" + namaFarmasi + "' kosong.");
@@ -96,7 +96,7 @@ public class Pharmacy {
         System.out.println("--------------------------------------------------");
     }
 
-    // Function untuk memproses dari penjual obat
+    // Function untuk memproses penjualan obat
     public PaymentInfo prosesPenjualan(Patient patient, Map<String, Integer> itemsToPurchase, PharmacyUser pharmacyUser) {
         if (patient == null || itemsToPurchase == null || itemsToPurchase.isEmpty() || pharmacyUser == null) {
             System.out.println("Proses penjualan gagal: Data pasien, item, atau pengguna farmasi tidak lengkap.");
@@ -141,6 +141,7 @@ public class Pharmacy {
         System.out.println("Fungsi prosesPenjualan perlu implementasi objek PaymentInfo/Transaction yang lebih detail.");
         return null;
     }
+
     // Function untuk konfirmasi proses resep
     public boolean prosesResep(Prescription prescription, PharmacyUser pharmacyUser) {
         if (prescription == null || pharmacyUser == null) {
