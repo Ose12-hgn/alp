@@ -16,8 +16,7 @@ record ItemQuantity(Item item, int quantity) {
     @Override
     public String toString() {
         if (item != null) {
-            return String.format("%s (Qty: %d) @ Rp%.2f = Rp%.2f",
-                    item.getNamaItem(), quantity, item.getHarga(), getTotalPrice());
+            return item.getNamaItem() + " (Qty: " + quantity + ") @ Rp" + item.getHarga() + " = Rp" + getTotalPrice();
         }
         return "Item tidak valid";
     }
