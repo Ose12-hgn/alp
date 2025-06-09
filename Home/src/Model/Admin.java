@@ -1,17 +1,13 @@
 package Model;
 
-import java.util.List;
-
 public class Admin extends Person {
-
     // Constructor
     public Admin(String userID, String nama, String alamat, String nomorTelepon, String email, String password) {
         super(userID, nama, alamat, nomorTelepon, email, password);
     }
 
     // Function untuk membuat akun dokter yang baru
-    public Doctor createDoctorAccount(String userID, String nama, String alamat, String nomorTelepon, String email, String password,
-                                      String spesialisasi, String nomorSTR) {
+    public Doctor createDoctorAccount(String userID, String nama, String alamat, String nomorTelepon, String email, String password, String spesialisasi, String nomorSTR) {
         Doctor newDoctor = new Doctor(userID, nama, alamat, nomorTelepon, email, password, spesialisasi, nomorSTR);
         System.out.println("Akun Dokter baru telah dibuat untuk Dr. " + nama + " (ID: " + userID + ") oleh Admin " + this.getNama() + ".");
         return newDoctor;
@@ -70,9 +66,9 @@ public class Admin extends Person {
     @Override
     public String toString() {
         return "Admin{" +
-               "userID='" + this.getUserID() + '\'' +
-               ", nama='" + this.getNama() + '\'' +
-               ", email='" + this.getEmail() + '\'' +
-               '}';
+                "userID='" + this.getUserID() + '\'' +
+                ", nama='" + this.getNama() + '\'' +
+                ", email='" + this.getEmail() + '\'' +
+                '}';
     }
 }

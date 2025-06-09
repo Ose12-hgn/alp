@@ -4,20 +4,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class Medicine extends Item {
+    // Attribute
     private LocalDate tanggalKadaluarsa;
-    private String dosis; // Example "Zyloric 300mg"
-    private String bentukSediaan; // Example: "Tabs Syrup"
+    private String dosis;
+    private String bentukSediaan;
     private boolean membutuhkanResep;
-    private String produsen; // Company Make
-    private String kategoriObat; // Example: "Antibiotics Vitamin"
+    private String produsen;
+    private String kategoriObat;
     private String petunjukPenyimpanan;
-    private boolean isRacikan; // Racik or not
+    private boolean isRacikan;
 
     // Constructor
-    public Medicine(String itemID, String namaItem, String deskripsi, double harga, int stok,
-                    LocalDate tanggalKadaluarsa, String dosis, String bentukSediaan,
-                    boolean membutuhkanResep, String produsen, String kategoriObat,
-                    String petunjukPenyimpanan, boolean isRacikan) {
+    public Medicine(String itemID, String namaItem, String deskripsi, double harga, int stok, LocalDate tanggalKadaluarsa, String dosis, String bentukSediaan, boolean membutuhkanResep, String produsen, String kategoriObat, String petunjukPenyimpanan, boolean isRacikan) {
         super (itemID, namaItem, deskripsi, harga, stok);
         this.tanggalKadaluarsa = tanggalKadaluarsa;
         this.dosis = dosis;
@@ -27,7 +25,7 @@ public class Medicine extends Item {
         this.kategoriObat = kategoriObat;
         this.petunjukPenyimpanan = petunjukPenyimpanan;
         this.isRacikan = isRacikan;
-    } // asking for parameter
+    }
 
     public LocalDate getTanggalKadaluarsa() {
         return tanggalKadaluarsa;
@@ -95,7 +93,7 @@ public class Medicine extends Item {
 
     public boolean isKadaluarsa() {
         return LocalDate.now().isAfter(this.tanggalKadaluarsa);
-    } //getter setter
+    }
 
     @Override
     public String toString() {
@@ -103,19 +101,19 @@ public class Medicine extends Item {
         String tanggalKadaluarsaStr = (tanggalKadaluarsa != null) ? tanggalKadaluarsa.format(formatter) : "N/A";
 
         return "Medicine{" +
-               "itemID='" + getItemID() + '\'' +
-               ", namaItem='" + getNamaItem() + '\'' +
-               ", harga=Rp" + String.format("%.2f", getHarga()) +
-               ", stok=" + getStok() +
-               ", tanggalKadaluarsa=" + tanggalKadaluarsaStr +
-               ", dosis='" + dosis + '\'' +
-               ", bentukSediaan='" + bentukSediaan + '\'' +
-               ", membutuhkanResep=" + membutuhkanResep +
-               ", produsen='" + produsen + '\'' +
-               ", kategoriObat='" + kategoriObat + '\'' +
-               ", petunjukPenyimpanan='" + petunjukPenyimpanan + '\'' +
-               ", isRacikan=" + isRacikan +
-               (isKadaluarsa() ? ", STATUS: KADALUARSA" : "") +
-               '}';
-    } // printing the medicine
+                "itemID='" + getItemID() + '\'' +
+                ", namaItem='" + getNamaItem() + '\'' +
+                ", harga=Rp" + String.format("%.2f", getHarga()) +
+                ", stok=" + getStok() +
+                ", tanggalKadaluarsa=" + tanggalKadaluarsaStr +
+                ", dosis='" + dosis + '\'' +
+                ", bentukSediaan='" + bentukSediaan + '\'' +
+                ", membutuhkanResep=" + membutuhkanResep +
+                ", produsen='" + produsen + '\'' +
+                ", kategoriObat='" + kategoriObat + '\'' +
+                ", petunjukPenyimpanan='" + petunjukPenyimpanan + '\'' +
+                ", isRacikan=" + isRacikan +
+                (isKadaluarsa() ? ", STATUS: KADALUARSA" : "") +
+                '}';
+    }
 }
