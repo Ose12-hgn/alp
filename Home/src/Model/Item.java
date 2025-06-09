@@ -1,7 +1,7 @@
 package Model;
 
-public class Item {
-    // Atributte
+public abstract class Item {
+    // Attribute
     String itemID;
     String namaItem;
     String deskripsi;
@@ -98,10 +98,10 @@ public class Item {
     @Override
     public String toString() {
         return "Item{" +
-               "itemID='" + itemID + '\'' +
-               ", namaItem='" + namaItem + '\'' +
-               ", harga=" + harga +
-               ", stok=" + stok +
-               '}';
+                "itemID='" + itemID + '\'' +
+                ", namaItem='" + namaItem + '\'' +
+                ", harga=" + harga +
+                ", stok=" + stok +
+                '}';
     }
 }

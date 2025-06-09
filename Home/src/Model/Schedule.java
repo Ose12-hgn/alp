@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Schedule {
+    // Attribute
     private String scheduleID;
     private Doctor doctor;
     private DayOfWeek dayOfWeek;
@@ -18,32 +19,31 @@ public class Schedule {
     private Queue<Appointment> dailyAppointmentQueue;
 
     // Constructor
-    public Schedule(String scheduleID, Doctor doctor, DayOfWeek dayOfWeek,
-                    LocalTime startTime, LocalTime endTime, boolean isActive, String notes) {
+    public Schedule(String scheduleID, Doctor doctor, DayOfWeek dayOfWeek, LocalTime startTime, LocalTime endTime, boolean isActive, String notes) {
         if (scheduleID == null || scheduleID.trim().isEmpty()) {
-            throw new IllegalArgumentException("Schedule ID tidak boleh null atau kosong.");
+            System.out.println("Schedule ID tidak boleh null atau kosong.");
         }
         if (doctor == null) {
-            throw new IllegalArgumentException("Dokter tidak boleh null.");
+            System.out.println("Dokter tidak boleh null.");
         }
         if (dayOfWeek == null) {
-            throw new IllegalArgumentException("Hari tidak boleh null.");
+            System.out.println("Hari tidak boleh null.");
         }
         if (startTime == null || endTime == null) {
-            throw new IllegalArgumentException("Waktu mulai dan selesai tidak boleh null.");
+            System.out.println("Waktu mulai dan selesai tidak boleh null.");
         }
         if (startTime.isAfter(endTime) || startTime.equals(endTime)) {
-            throw new IllegalArgumentException("Waktu mulai harus sebelum waktu selesai.");
+            System.out.println("Waktu mulai harus sebelum waktu selesai.");
+        } else {
+            this.scheduleID = scheduleID;
+            this.doctor = doctor;
+            this.dayOfWeek = dayOfWeek;
+            this.startTime = startTime;
+            this.endTime = endTime;
+            this.isActive = isActive;
+            this.notes = (notes == null) ? "" : notes;
+            this.dailyAppointmentQueue = new LinkedList<>();
         }
-        
-        this.scheduleID = scheduleID;
-        this.doctor = doctor;
-        this.dayOfWeek = dayOfWeek;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.isActive = isActive;
-        this.notes = (notes == null) ? "" : notes;
-        this.dailyAppointmentQueue = new LinkedList<>();
     }
     
     public Queue<Appointment> getDailyAppointmentQueue() {
@@ -62,22 +62,18 @@ public class Schedule {
         return doctor;
     }
 
-    // Fixed method name to match usage in other classes
     public Doctor getDokter() {
         return doctor;
     }
 
-    // Fixed method name to match usage in other classes  
     public String getHari() {
         return dayOfWeek.toString();
     }
 
-    // Fixed method name to match usage in other classes
     public String getJamMulai() {
         return startTime.toString();
     }
 
-    // Fixed method name to match usage in other classes
     public String getJamSelesai() {
         return endTime.toString();
     }
@@ -104,30 +100,34 @@ public class Schedule {
 
     public void setDoctor(Doctor doctor) {
         if (doctor == null) {
-            throw new IllegalArgumentException("Dokter tidak boleh null.");
+            System.out.println("Dokter tidak boleh null.");
+        } else {
+            this.doctor = doctor;
         }
-        this.doctor = doctor;
     }
 
     public void setDayOfWeek(DayOfWeek dayOfWeek) {
         if (dayOfWeek == null) {
-            throw new IllegalArgumentException("Hari tidak boleh null.");
+            System.out.println("Hari tidak boleh null.");
+        } else {
+            this.dayOfWeek = dayOfWeek;
         }
-        this.dayOfWeek = dayOfWeek;
     }
 
     public void setStartTime(LocalTime startTime) {
         if (startTime == null || (this.endTime != null && (startTime.isAfter(this.endTime) || startTime.equals(this.endTime)))) {
-            throw new IllegalArgumentException("Waktu mulai tidak valid atau harus sebelum waktu selesai.");
+            System.out.println("Waktu mulai tidak valid atau harus sebelum waktu selesai.");
+        } else {
+            this.startTime = startTime;
         }
-        this.startTime = startTime;
     }
 
     public void setEndTime(LocalTime endTime) {
         if (endTime == null || (this.startTime != null && (endTime.isBefore(this.startTime) || endTime.equals(this.startTime)))) {
-            throw new IllegalArgumentException("Waktu selesai tidak valid atau harus setelah waktu mulai.");
+            System.out.println("Waktu selesai tidak valid atau harus setelah waktu mulai.");
+        } else {
+            this.endTime = endTime;
         }
-        this.endTime = endTime;
     }
 
     public void setActive(boolean active) {
@@ -138,28 +138,27 @@ public class Schedule {
         this.notes = (notes == null) ? "" : notes;
     }
 
+    // Function untuk mengecek apakah tanggal dan waktu berada dalam jadwal
     public boolean isWithinSchedule(LocalDateTime dateTime) {
         if (dateTime == null || !this.isActive) {
             return false;
         }
-        return dateTime.getDayOfWeek() == this.dayOfWeek &&
-               !dateTime.toLocalTime().isBefore(this.startTime) &&
-               (dateTime.toLocalTime().isBefore(this.endTime) || dateTime.toLocalTime().equals(this.endTime));
+        return dateTime.getDayOfWeek().equals(this.dayOfWeek) && !dateTime.toLocalTime().isBefore(this.startTime) && (dateTime.toLocalTime().isBefore(this.endTime) || dateTime.toLocalTime().equals(this.endTime));
     }
 
     @Override
     public String toString() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String scheduleDetails = "Schedule{" +
-               "scheduleID='" + scheduleID + '\'' +
-               ", doctor=" + (doctor != null ? doctor.getNama() : "N/A") +
-               ", dayOfWeek=" + dayOfWeek +
-               ", startTime=" + (startTime != null ? startTime.format(timeFormatter) : "N/A") +
-               ", endTime=" + (endTime != null ? endTime.format(timeFormatter) : "N/A") +
-               ", isActive=" + isActive +
-               ", notes='" + notes + '\'' +
-               ", Antrean Hari Ini (size)=" + (dailyAppointmentQueue != null ? dailyAppointmentQueue.size() : 0) +
-               '}';
+                "scheduleID='" + scheduleID + '\'' +
+                ", doctor=" + (doctor != null ? doctor.getNama() : "N/A") +
+                ", dayOfWeek=" + dayOfWeek +
+                ", startTime=" + (startTime != null ? startTime.format(timeFormatter) : "N/A") +
+                ", endTime=" + (endTime != null ? endTime.format(timeFormatter) : "N/A") +
+                ", isActive=" + isActive +
+                ", notes='" + notes + '\'' +
+                ", Antrean Hari Ini (size)=" + (dailyAppointmentQueue.size()) +
+                '}';
         return scheduleDetails;
     }
 

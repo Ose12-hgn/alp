@@ -3,7 +3,7 @@ package Model;
 import java.time.LocalDateTime;
 
 public class Appointment {
-    // Atributte
+    // Attribute
     private String appointmentID;
     private Patient pasien;
     private Doctor dokter;
@@ -15,7 +15,7 @@ public class Appointment {
     // Constructor
     public Appointment(String appointmentID, Patient pasien, Doctor dokter, LocalDateTime waktuJanji, String keluhanAwal) {
         if (pasien == null || dokter == null || waktuJanji == null || appointmentID == null || appointmentID.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tidak boleh kosong.");
+            System.out.println("Tidak boleh kosong.");
         }
         this.appointmentID = appointmentID;
         this.pasien = pasien;
@@ -27,23 +27,23 @@ public class Appointment {
     }
     
     public Patient getPasien() {
-        return pasien; // atau nama field yang sesuai
+        return pasien;
     }
 
     public Doctor getDokter() {
-        return dokter; // atau nama field yang sesuai
+        return dokter;
     }
 
     public String getAppointmentID() {
-        return appointmentID; // atau nama field yang sesuai
+        return appointmentID;
     }
 
     public LocalDateTime getWaktuJanji() {
-        return waktuJanji; // atau nama field yang sesuai
+        return waktuJanji;
     }
 
     public String getStatus() {
-        return status; // atau nama field yang sesuai
+        return status;
     }
 
     public String getKeluhanAwal() {
@@ -124,16 +124,16 @@ public class Appointment {
     @Override
     public String toString() {
         return "Appointment{" +
-               "appointmentID='" + appointmentID + '\'' +
-               ", pasien=" + (pasien != null ? pasien.getNama() : "N/A") +
-               ", dokter=" + (dokter != null ? dokter.getNama() : "N/A") +
-               ", waktuJanji=" + waktuJanji +
-               ", status='" + status + '\'' +
-               ", keluhanAwal='" + keluhanAwal + '\'' +
-               ", catatanDokter='" + (catatanDokter != null && !catatanDokter.isEmpty() ? catatanDokter : "Belum ada") + '\'' +
-               '}';
+                "appointmentID='" + appointmentID + '\'' +
+                ", pasien=" + (pasien != null ? pasien.getNama() : "N/A") +
+                ", dokter=" + (dokter != null ? dokter.getNama() : "N/A") +
+                ", waktuJanji=" + waktuJanji +
+                ", status='" + status + '\'' +
+                ", keluhanAwal='" + keluhanAwal + '\'' +
+                ", catatanDokter='" + (catatanDokter != null && !catatanDokter.isEmpty() ? catatanDokter : "Belum ada") + '\'' +
+                '}';
     }
-  
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

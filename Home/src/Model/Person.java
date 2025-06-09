@@ -1,7 +1,7 @@
 package Model;
 
-public class Person {
-    // Atributte
+public abstract class Person {
+    // Attribute
     private String userID;
     private String nama;
     private String alamat;
@@ -60,7 +60,7 @@ public class Person {
     }
 
     public String getPassword() {
-        return "********";
+        return password;
     }
 
     public void setPassword(String password) {
@@ -90,9 +90,9 @@ public class Person {
     @Override
     public String toString() {
         return "Person{" +
-               "userID='" + userID + '\'' +
-               ", nama='" + nama + '\'' +
-               ", email='" + email + '\'' +
-               '}';
+                "userID='" + userID + '\'' +
+                ", nama='" + nama + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

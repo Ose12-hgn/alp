@@ -1,20 +1,21 @@
 package Model;
 
 public class MedicineUsage {
-    private Medicine medicine; // Meds that is racik
-    private String dosis;      // Example: "5mg, 10ml"
-    private String frekuensi;  // Example: "4x a day"
-    private String durasi;     // Example: "1 Week, 1 Month"
-    private String aturanPakai; // Example: "Before eating, after eating"
-    private int jumlahDiresepkan; // Example: "1 bottle, 10 pills"
+    // Attribute
+    private Medicine medicine; 
+    private String dosis;
+    private String frekuensi; 
+    private String durasi;
+    private String aturanPakai; 
+    private int jumlahDiresepkan;
 
     // Constructor
     public MedicineUsage(Medicine medicine, String dosis, String frekuensi, String durasi, String aturanPakai, int jumlahDiresepkan) {
         if (medicine == null) {
-            throw new IllegalArgumentException("Obat tidak boleh null untuk MedicineUsage.");
+            System.out.println("Obat tidak boleh null untuk MedicineUsage.");
         }
         if (jumlahDiresepkan <= 0) {
-            throw new IllegalArgumentException("Jumlah yang diresepkan harus lebih dari 0.");
+            System.out.println("Jumlah yang diresepkan harus lebih dari 0.");
         }
         this.medicine = medicine;
         this.dosis = (dosis == null || dosis.trim().isEmpty()) ? "Sesuai anjuran" : dosis;
@@ -66,19 +67,19 @@ public class MedicineUsage {
 
     public void setJumlahDiresepkan(int jumlahDiresepkan) {
         if (jumlahDiresepkan <= 0) {
-            throw new IllegalArgumentException("Jumlah yang diresepkan harus lebih dari 0.");
+            System.out.println("Jumlah yang diresepkan harus lebih dari 0.");
         }
         this.jumlahDiresepkan = jumlahDiresepkan;
-    } // Getter Setter
+    }
 
     @Override
     public String toString() {
         return medicine.getNamaItem() +
-               " (" + medicine.getBentukSediaan() + ")" +
-               " - Jumlah: " + jumlahDiresepkan +
-               ", Dosis: " + dosis +
-               ", Frekuensi: " + frekuensi +
-               ", Durasi: " + durasi +
-               ", Aturan: " + aturanPakai;
+                " (" + medicine.getBentukSediaan() + ")" +
+                " - Jumlah: " + jumlahDiresepkan +
+                ", Dosis: " + dosis +
+                ", Frekuensi: " + frekuensi +
+                ", Durasi: " + durasi +
+                ", Aturan: " + aturanPakai;
     }
 }

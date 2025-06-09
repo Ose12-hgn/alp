@@ -39,6 +39,10 @@ public class Pharmacy {
         return inventarisItems;
     }
 
+    public List<PaymentInfo> getDaftarTransaksi() {
+        return daftarTransaksi;
+    }
+
     // Function untuk menambah atau meng-update item ke gudang
     public void tambahAtauUpdateItemInventaris(Item item, int quantity) {
         if (item == null || quantity <= 0) {
@@ -49,6 +53,7 @@ public class Pharmacy {
         if (inventarisItems.containsKey(item.getItemID())) {
             Item existingItem = inventarisItems.get(item.getItemID());
             existingItem.tambahStok(quantity);
+            inventarisItems.put(item.getItemID(), existingItem);
             System.out.println("Stok untuk item '" + item.getNamaItem() + "' berhasil diperbarui. Stok saat ini: " + existingItem.getStok());
         } else {
             item.setStok(quantity);
@@ -123,7 +128,7 @@ public class Pharmacy {
 
             if (itemDiInventaris instanceof Medicine) {
                 Medicine medicine = (Medicine) itemDiInventaris;
-                if (medicine.membutuhkanResep()) {
+                if (medicine.isMembutuhkanResep()) {
                     System.out.println("Obat '" + medicine.getNamaItem() + "' membutuhkan resep. Proses melalui `prosesResep`.");
                 }
             }
@@ -134,11 +139,9 @@ public class Pharmacy {
 
         System.out.println("Total biaya: Rp" + totalBiaya);
         for (Map.Entry<String, Integer> entry : itemsToPurchase.entrySet()) {
-            Item itemDiInventaris = cariItemByID(entry.getKey());
-            itemDiInventaris.kurangiStok(entry.getValue());
+            cariItemByID(entry.getKey()).kurangiStok(entry.getValue());
         }
         System.out.println("Penjualan berhasil diproses.");
-        System.out.println("Fungsi prosesPenjualan perlu implementasi objek PaymentInfo/Transaction yang lebih detail.");
         return null;
     }
 
@@ -149,26 +152,24 @@ public class Pharmacy {
             return false;
         }
 
-        System.out.println("Memproses resep ID: " + prescription.getPrescriptionID() + " untuk pasien: " + prescription.getPasien().getNama() + " oleh " + pharmacyUser.getNama());
+        System.out.println("Memproses resep ID: " + prescription.getPrescriptionID() + " untuk pasien: " + prescription.getPatient().getNama() + " oleh " + pharmacyUser.getNama());
         System.out.println("Resep berhasil diproses.");
-        System.out.println("Fungsi prosesResep perlu implementasi detail interaksi dengan objek Prescription dan Medicine.");
         return true;
     }
 
     // Function untuk membuat obat racikan atau obat baru
     public Medicine buatObatRacikan(List<Map<Medicine, Double>> components, Prescription prescription, PharmacyUser pharmacyUser) {
         System.out.println(pharmacyUser.getNama() + " meracik obat untuk resep ID: " + prescription.getPrescriptionID());
-        System.out.println("Fungsi buatObatRacikan perlu implementasi detail.");
         return null;
     }
 
     @Override
     public String toString() {
         return "Pharmacy{" +
-               "pharmacyID='" + pharmacyID + '\'' +
-               ", namaFarmasi='" + namaFarmasi + '\'' +
-               ", alamatFarmasi='" + alamatFarmasi + '\'' +
-               ", jumlahItemDiInventaris=" + inventarisItems.size() +
-               '}';
+                "pharmacyID='" + pharmacyID + '\'' +
+                ", namaFarmasi='" + namaFarmasi + '\'' +
+                ", alamatFarmasi='" + alamatFarmasi + '\'' +
+                ", jumlahItemDiInventaris=" + inventarisItems.size() +
+                '}';
     }
 }

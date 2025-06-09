@@ -1,8 +1,8 @@
 package Model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.time.LocalDate;
 
 public class Doctor extends Person {
     // Atributte
@@ -12,8 +12,7 @@ public class Doctor extends Person {
     private List<Appointment> daftarJanjiTemuPasien;
 
     // Constructor
-    public Doctor(String userID, String nama, String alamat, String nomorTelepon, String email, String password,
-                  String spesialisasi, String nomorSTR) {
+    public Doctor(String userID, String nama, String alamat, String nomorTelepon, String email, String password, String spesialisasi, String nomorSTR) {
         super(userID, nama, alamat, nomorTelepon, email, password);
         this.spesialisasi = spesialisasi;
         this.nomorSTR = nomorSTR;
@@ -51,7 +50,7 @@ public class Doctor extends Person {
             return null;
         }
 
-        // Membuat ID Resep yang unik (contoh sederhana)
+        // Membuat ID Resep yang unik
         String prescriptionID = "PRES-" + pasien.getUserID() + "-" + System.currentTimeMillis() % 100000;
 
         Prescription resepBaru = new Prescription(prescriptionID, this, pasien, LocalDate.now(), catatanTambahan);
@@ -60,9 +59,8 @@ public class Doctor extends Person {
             resepBaru.tambahObatKeResep(mu);
         }
 
-        // Penting: Pasien juga perlu menyimpan referensi ke resep ini
-        if (pasien.getDaftarResepObat() != null) { // Sebaiknya getDaftarResepObat() tidak null
-            pasien.tambahResep(resepBaru); // Asumsi ada metode tambahResep di Patient
+        if (pasien.getDaftarResepObat() != null) {
+            pasien.tambahResep(resepBaru);
         }
 
         System.out.println("Dr. " + getNama() + " berhasil membuat resep ID: " + resepBaru.getPrescriptionID() + " untuk pasien " + pasien.getNama() + ".");
@@ -82,11 +80,10 @@ public class Doctor extends Person {
     public void lakukanKonsultasi(Patient pasien, String diagnosis, String penanganan, Doctor dokterPemeriksa) {
         System.out.println("Dr. " + getNama() + " melakukan konsultasi dengan pasien " + pasien.getNama() + ".");
         if (pasien != null && pasien.getMedicalRecord() != null) {
-            // Menggunakan metode baru di MedicalRecord
             pasien.getMedicalRecord().tambahRiwayatKunjungan(LocalDate.now(), diagnosis, penanganan, dokterPemeriksa);
             System.out.println("Catatan konsultasi ditambahkan ke rekam medis.");
         } else {
-             System.out.println("Tidak dapat menambahkan catatan konsultasi ke rekam medis.");
+            System.out.println("Tidak dapat menambahkan catatan konsultasi ke rekam medis.");
         }
     }
 
@@ -139,7 +136,7 @@ public class Doctor extends Person {
         }
         System.out.println("Daftar Janji Temu Dr. " + getNama() + ":");
         for (Appointment janji : daftarJanjiTemuPasien) {
-            System.out.println("- Pasien: " + janji.getPasien().getNama() + ", Waktu: " + janji.getWaktuJanji() + ", Status: " + janji.getStatus());
+            System.out.println("- ID: " + janji.getAppointmentID() + " | Pasien: " + janji.getPasien().getNama() + ", Waktu: " + janji.getWaktuJanji() + ", Status: " + janji.getStatus());
         }
     }
 

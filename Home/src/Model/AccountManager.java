@@ -6,19 +6,21 @@ import java.util.List;
 import java.util.Iterator;
 
 public class AccountManager {
-
+    // Attribute
     private List<Person> daftarSemuaAkun;
 
+    // Constructor
     public AccountManager() {
         this.daftarSemuaAkun = new ArrayList<>();
     }
 
+    // Function untuk menambahkan akun baru
     public void tambahAkun(Person person) {
         if (person == null) {
             System.out.println("Gagal menambahkan akun: objek Person tidak boleh null.");
             return;
         }
-        // Cek duplikasi userID sebelum menambahkan (opsional tapi direkomendasikan)
+        // Cek duplikasi userID sebelum menambahkan
         if (cariAkunByUserID(person.getUserID()) != null) {
             System.out.println("Gagal menambahkan akun: UserID '" + person.getUserID() + "' sudah terdaftar.");
             return;
@@ -27,6 +29,7 @@ public class AccountManager {
         System.out.println("Akun untuk " + person.getNama() + " (ID: " + person.getUserID() + ") berhasil ditambahkan.");
     }
 
+    // Function untuk mencari akun berdasarkan UserID
     public Person cariAkunByUserID(String userID) {
         if (userID == null || userID.trim().isEmpty()) {
             return null;
@@ -39,6 +42,7 @@ public class AccountManager {
         return null;
     }
 
+    // Function untuk menghapus akun berdasarkan UserID
     public boolean hapusAkun(String userID) {
         if (userID == null || userID.trim().isEmpty()) {
             System.out.println("Gagal menghapus akun: UserID tidak valid.");
@@ -58,9 +62,10 @@ public class AccountManager {
     }
 
     public List<Person> getSemuaAkun() {
-        return new ArrayList<>(this.daftarSemuaAkun); // Kembalikan salinan
+        return new ArrayList<>(this.daftarSemuaAkun);
     }
 
+    // Function untuk verifikasi login
     public Person verifikasiLogin(String userID, String inputPassword) {
         Person person = cariAkunByUserID(userID);
         if (person != null) {
@@ -73,6 +78,7 @@ public class AccountManager {
         return null;
     }
 
+    // Function untuk menampilkan detail semua akun
     public void tampilkanDetailSemuaAkun() {
         if (daftarSemuaAkun.isEmpty()) {
             System.out.println("Tidak ada akun yang terdaftar.");
@@ -80,7 +86,7 @@ public class AccountManager {
         }
         System.out.println("\n--- Daftar Semua Akun Pengguna ---");
         for (Person person : daftarSemuaAkun) {
-            System.out.println(person.toString()); // Memanggil toString() dari objek Person
+            System.out.println(person.toString());
         }
         System.out.println("---------------------------------");
     }

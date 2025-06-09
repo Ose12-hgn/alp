@@ -6,26 +6,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Prescription {
-    private String prescriptionID; // ID for meds recipe
+    // Attribute
+    private String prescriptionID;
     private Doctor doctor;
     private Patient patient;
     private LocalDate tanggalResep;
     private List<MedicineUsage> daftarObatDalamResep;
-    private String statusResep; // Example: "New, In Progress, Done"
-    private String catatanTambahanDokter; // Notes from doctor
+    private String statusResep;
+    private String catatanTambahanDokter;
 
     // Constructor
     public Prescription(String prescriptionID, Doctor doctor, Patient patient, LocalDate tanggalResep, String catatanTambahanDokter) {
         if (prescriptionID == null || prescriptionID.trim().isEmpty() || doctor == null || patient == null || tanggalResep == null) {
-            throw new IllegalArgumentException("Parameter ID, Dokter, Pasien, dan Tanggal Resep tidak boleh null atau kosong.");
+            System.out.println("Parameter ID, Dokter, Pasien, dan Tanggal Resep tidak boleh null atau kosong.");
+        } else {
+            this.prescriptionID = prescriptionID;
+            this.doctor = doctor;
+            this.patient = patient;
+            this.tanggalResep = tanggalResep;
+            this.daftarObatDalamResep = new ArrayList<>();
+            this.statusResep = "BARU"; // Status for recipe
+            this.catatanTambahanDokter = (catatanTambahanDokter == null) ? "" : catatanTambahanDokter;
         }
-        this.prescriptionID = prescriptionID;
-        this.doctor = doctor;
-        this.patient = patient;
-        this.tanggalResep = tanggalResep;
-        this.daftarObatDalamResep = new ArrayList<>();
-        this.statusResep = "BARU"; // Status for recipe
-        this.catatanTambahanDokter = (catatanTambahanDokter == null) ? "" : catatanTambahanDokter;
     }
 
     public LocalDate getTanggalResep() {
@@ -45,7 +47,6 @@ public class Prescription {
     }
 
     public List<MedicineUsage> getDaftarObatDalamResep() {
-        // taking list so that it can't be modified by other person
         return new ArrayList<>(daftarObatDalamResep);
     }
 
@@ -56,22 +57,22 @@ public class Prescription {
     public String getCatatanTambahanDokter() {
         return catatanTambahanDokter;
     }
-  
+
     public void setStatusResep(String statusResep) {
         if (statusResep == null || statusResep.trim().isEmpty()) {
             System.out.println("Status resep tidak boleh null atau kosong.");
             return;
         }
-        // Changing transision
+        
         this.statusResep = statusResep;
         System.out.println("Status resep ID " + this.prescriptionID + " diubah menjadi " + statusResep);
     }
 
     public void setCatatanTambahanDokter(String catatanTambahanDokter) {
         this.catatanTambahanDokter = (catatanTambahanDokter == null) ? "" : catatanTambahanDokter;
-    } //Getter Setter
+    }
 
-    // Processing Meds Recipe
+    // Function untuk menambah obat dari resep
     public void tambahObatKeResep(MedicineUsage medicineUsage) {
         if (medicineUsage != null) {
             this.daftarObatDalamResep.add(medicineUsage);
@@ -81,6 +82,7 @@ public class Prescription {
         }
     }
 
+    // Function untuk menghapus obat dari resep
     public boolean hapusObatDariResep(MedicineUsage medicineUsage) {
         if (medicineUsage != null && this.daftarObatDalamResep.remove(medicineUsage)) {
             System.out.println("Obat '" + medicineUsage.getMedicine().getNamaItem() + "' dihapus dari resep ID " + this.prescriptionID);
@@ -91,11 +93,12 @@ public class Prescription {
         }
     }
 
-    // Other Method
+    // Function untuk mengecek apakah resep kosong
     public boolean isResepKosong() {
         return this.daftarObatDalamResep.isEmpty();
     }
 
+    // Function untuk mengecek apakah resep sudah kadaluarsa
     public boolean isKadaluarsa(int durasiBerlakuResepDalamHari) {
         if (durasiBerlakuResepDalamHari <= 0) {
             return false; // Duration of expired

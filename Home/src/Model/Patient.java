@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Patient extends Person {
-    // Atribut
+    // Attribute
     private LocalDate tanggalLahir;
     private String jenisKelamin;
     private String golonganDarah;
@@ -15,8 +15,7 @@ public class Patient extends Person {
     private List<Prescription> daftarResepObat;
 
     // Constructor
-    public Patient(String userID, String nama, String alamat, String nomorTelepon, String email, String password,
-                   LocalDate tanggalLahir, String jenisKelamin, String golonganDarah) {
+    public Patient(String userID, String nama, String alamat, String nomorTelepon, String email, String password, LocalDate tanggalLahir, String jenisKelamin, String golonganDarah) {
         super(userID, nama, alamat, nomorTelepon, email, password);
         this.tanggalLahir = tanggalLahir;
         this.jenisKelamin = jenisKelamin;
@@ -26,7 +25,6 @@ public class Patient extends Person {
         this.daftarResepObat = new ArrayList<>();
     }
 
-    // Getter untuk medicalRecord
     public MedicalRecord getMedicalRecord() {
         return medicalRecord;
     }
@@ -65,8 +63,7 @@ public class Patient extends Person {
 
     // Function untuk membuat janji temu dengan dokter
     public Appointment buatJanjiTemu(Doctor doctor, LocalDateTime waktuJanji, String keluhan) {
-        System.out.println("Pasien " + getNama() + " meminta janji temu dengan Dr. " + doctor.getNama() +
-                           " pada " + waktuJanji + " dengan keluhan: " + keluhan);
+        System.out.println("Pasien " + getNama() + " meminta janji temu dengan Dr. " + doctor.getNama() + " pada " + waktuJanji + " dengan keluhan: " + keluhan);
         System.out.println("Fungsi buatJanjiTemu perlu implementasi lebih lanjut dengan AppointmentService.");
         return null;
     }
@@ -85,9 +82,7 @@ public class Patient extends Person {
             return false;
         }
 
-        System.out.println("Janji temu ID " + appointment.getAppointmentID() + " dengan Dr. " +
-                           appointment.getDokter().getNama() + " telah diminta untuk dibatalkan oleh " + getNama() + ".");
-        System.out.println("Fungsi batalkanJanjiTemu perlu implementasi lebih lanjut.");
+        System.out.println("Janji temu ID " + appointment.getAppointmentID() + " dengan Dr. " + appointment.getDokter().getNama() + " telah diminta untuk dibatalkan oleh " + getNama() + ".");
         return true;
     }
 
@@ -99,7 +94,7 @@ public class Patient extends Person {
         }
         System.out.println("Daftar Janji Temu untuk " + getNama() + ":");
         for (Appointment app : daftarJanjiTemu) {
-            System.out.println("- Dr. " + app.getDokter().getNama() + " pada " + app.getWaktuJanji() + " (Status: " + app.getStatus() + ")");
+            System.out.println("- ID: " + app.getAppointmentID() + " | Dr. " + app.getDokter().getNama() + " pada " + app.getWaktuJanji() + " (Status: " + app.getStatus() + ")");
         }
     }
 
@@ -115,7 +110,7 @@ public class Patient extends Person {
 
     // Function untuk menambahkan resep dari dokter ke list
     public void tambahResep(Prescription prescription) {
-        if (prescription != null && prescription.getPasien().equals(this)) {
+        if (prescription != null && prescription.getPatient().equals(this)) {
             this.daftarResepObat.add(prescription);
         }
     }
@@ -128,18 +123,18 @@ public class Patient extends Person {
         }
         System.out.println("Daftar Resep Obat untuk " + getNama() + ":");
         for (Prescription prescription : daftarResepObat) {
-            System.out.println("- Resep dari Dr. " + prescription.getDokter().getNama() + " tanggal " + prescription.getTanggalResep());
+            System.out.println("- ID: " + prescription.getPrescriptionID() + " | Resep dari Dr. " + prescription.getDoctor().getNama() + " tanggal " + prescription.getTanggalResep());
         }
     }
 
     @Override
     public String toString() {
         return "Patient{" +
-               "userID='" + getUserID() + '\'' +
-               ", nama='" + getNama() + '\'' +
-               ", tanggalLahir=" + tanggalLahir +
-               ", jenisKelamin='" + jenisKelamin + '\'' +
-               ", email='" + getEmail() + '\'' +
-               '}';
+                "userID='" + getUserID() + '\'' +
+                ", nama='" + getNama() + '\'' +
+                ", tanggalLahir=" + tanggalLahir +
+                ", jenisKelamin='" + jenisKelamin + '\'' +
+                ", email='" + getEmail() + '\'' +
+                '}';
     }
 }
